@@ -1,0 +1,51 @@
+name: PUSH
+on:
+  push:
+    branches:
+      - main
+env:
+  XRAY_VERSION: 3.21.5
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: Reponse body
+        id: response_info_1
+        run: |
+          cd xray
+          ls -all
+          ./tools
+          ls -all
+          result=$(ls changet|wc -l)
+          rs='false'
+          echo $result"................."
+          if [[ result -gt 0 ]];then
+            rs='true'
+          fi
+          echo "::set-output name=run_project_b_build::${rs}"
+
+      - name: Build project
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        run: |
+          wget -v https://github.com/XTLS/Xray-core/releases/download/v1.5.10/Xray-linux-64.zip
+          pwd
+      - name: git push change file
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        continue-on-error: true
+        run: |
+          git config --local user.name "crab"
+          git config --local user.email "imrcrab@163.com"
+          git add xray/version.yml
+          git commit -m "modify: auto by action"
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/crab21/vps_deploy.git
+          rm -rf ~/.ssh
