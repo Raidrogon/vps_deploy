@@ -1,8 +1,12 @@
 name: PUSH
 on:
   push:
-    branches:
-      - main
+    paths:
+      - "xray/"
+      - "**/xray.yml"
+env:
+  XRAY_VERSION: v1.5.10
+  XRAY_DIR: xray
 
 jobs:
   build:
@@ -20,11 +24,11 @@ jobs:
       - name: Reponse body
         id: response_info_1
         run: |
-          cd xray
+          cd ${{ env.XRAY_DIR }}
           ls -all
           ./tools
           ls -all
-          result=$(ls changet|wc -l)
+          result="true"
           rs='false'
           echo $result"................."
           if [[ result -gt 0 ]];then
@@ -35,11 +39,11 @@ jobs:
       - name: Build project
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         run: |
-          cd xray
-          wget -v https://github.com/XTLS/Xray-core/releases/download/v1.5.10/Xray-linux-64.zip
+          cd ${{ env.XRAY_DIR }}
+          wget -v https://github.com/XTLS/Xray-core/releases/download/${{ env.XRAY_VERSION }}/Xray-linux-64.zip
           cd ../
           pwd
-          ls -all xray/
+          ls -all ${{ env.XRAY_DIR }}/
       - name: copy file via ssh key
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         uses: appleboy/scp-action@master
@@ -48,9 +52,9 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY }}
-          source: "./xray"
+          source: "./${{ env.XRAY_DIR }}"
           target: "/root"
-      - name: mv ./public to outside
+      - name: mv ./xray to outside
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         uses: appleboy/ssh-action@master
         with:
@@ -60,11 +64,11 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            cd /root/xray
+            cd /root/${{ env.XRAY_DIR }}
             unzip Xray-linux-64.zip
             rm -rf Xray-linux-64.zip
             chmod +x xray
-            mv xray.service /etc/systemd/system/xray.service
+            mv -f xray.service /etc/systemd/system/xray.service
             systemctl enable xray
             systemctl start xray
       - name: git push change file
@@ -73,7 +77,7 @@ jobs:
         run: |
           git config --local user.name "crab"
           git config --local user.email "imrcrab@163.com"
-          git add xray/version.yml
+          git add ${{ env.XRAY_DIR }}/version.yml
           git commit -m "modify: auto by action"
           git push https://${{ secrets.GITHUB_TOKEN }}@github.com/crab21/vps_deploy.git
           rm -rf ~/.ssh
