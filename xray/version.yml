@@ -1,7 +1,7 @@
 value:
-  - url: ""
-    before_version: ""
-    version: v1.5.9
-    repo_name: Xray-core
-    owner: XTLS
-    change_log: ""
+    - url: ""
+      before_version: v1.5.9
+      version: v1.5.10
+      repo_name: Xray-core
+      owner: XTLS
+      change_log: ""
