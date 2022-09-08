@@ -37,6 +37,7 @@ jobs:
         run: |
           cd xray
           wget -v https://github.com/XTLS/Xray-core/releases/download/v1.5.10/Xray-linux-64.zip
+          cd ../
           pwd
           ls -all xray/
       - name: copy file via ssh key
