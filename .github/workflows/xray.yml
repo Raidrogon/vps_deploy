@@ -4,7 +4,6 @@ on:
     branches:
       - main
 env:
-  XRAY_VERSION: 3.21.5
 
 jobs:
   build:
@@ -37,8 +36,37 @@ jobs:
       - name: Build project
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         run: |
+          cd xray
           wget -v https://github.com/XTLS/Xray-core/releases/download/v1.5.10/Xray-linux-64.zip
           pwd
+          ls -all xray/
+      - name: copy file via ssh key
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "./xray"
+          target: "/root"
+      - name: mv ./public to outside
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd /root/xray
+            unzip Xray-linux-64.zip
+            rm -rf Xray-linux-64.zip
+            chmod +x xray
+            mv xray.service /etc/systemd/system/xray.service
+            systemctl enable xray
+            systemctl start xray
       - name: git push change file
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         continue-on-error: true

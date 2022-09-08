@@ -1,0 +1,11 @@
+[Unit]
+Description=xray ws server start
+After=network.target
+
+[Service]
+PermissionsStartOnly=true
+ExecStart=/root/xray/xray run -config /root/xray/xray.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

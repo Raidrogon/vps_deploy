@@ -1,0 +1,74 @@
+{
+    "log": {
+        "loglevel": "error"
+    },
+    "inbounds": [
+        {
+            "port": 1443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29",
+                        "flow": "xtls-rprx-direct",
+                        "level": 0
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "alpn": "http/1.1",
+                        "dest": 80
+                    },
+                    {
+                        "alpn": "h2",
+                        "dest": "/dev/shm/h2c_443.sock",
+                        "xver": 1
+                    },
+                    {
+                        "alpn": "h3",
+                        "dest": "/dev/shm/h3c_443.sock",
+                        "xver": 1
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "xtls",
+                "xtlsSettings": {
+                    "serverName": "blog.imrcrab.com",
+                    "alpn": [
+                        "http/1.1",
+                        "h2",
+                        "h3"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/etc/letsencrypt/live/blog.imrcrab.com/fullchain.pem",
+                            "keyFile": "/etc/letsencrypt/live/blog.imrcrab.com/privkey.pem"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            }
+        },
+        {
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            }
+        },
+        {
+            "protocol": "blackhole",
+            "settings": {},
+            "tag": "blocked"
+        }
+    ]
+}
