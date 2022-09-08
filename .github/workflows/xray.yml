@@ -28,7 +28,7 @@ jobs:
           ls -all
           ./tools
           ls -all
-          result="true"
+          result=$(ls |wc -l)
           rs='false'
           echo $result"................."
           if [[ result -gt 0 ]];then
