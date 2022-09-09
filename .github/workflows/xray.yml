@@ -65,6 +65,8 @@ jobs:
           key: ${{ secrets.VPS_KEY }}
           script: |
             cd /root/${{ env.XRAY_DIR }}
+            cat sysctl.conf >> /etc/sysctl.conf
+            sysctl -p
             unzip Xray-linux-64.zip
             rm -rf Xray-linux-64.zip
             chmod +x xray
