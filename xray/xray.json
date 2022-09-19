@@ -2,6 +2,45 @@
     "log": {
         "loglevel": "error"
     },
+    "dns": {
+        "servers": [
+            "https+local://1.1.1.1/dns-query"
+        ]
+    },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:private"
+                ],
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "geosite:category-ads-all"
+                ],
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "geosite:cn"
+                ],
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn",
+                    "geoip:private"
+                ],
+                "outboundTag": "block"
+            }
+        ]
+    },
     "inbounds": [
         {
             "port": 1443,
@@ -31,7 +70,7 @@
                 "network": "tcp",
                 "security": "xtls",
                 "xtlsSettings": {
-                    "serverName": "blog.imrcrab.com",
+                    "serverName": "ali.imrcrab.com",
                     "alpn": [
                         "http/1.1",
                         "h2"
@@ -54,15 +93,8 @@
             }
         },
         {
-            "protocol": "freedom",
-            "settings": {
-                "domainStrategy": "UseIPv4"
-            }
-        },
-        {
-            "protocol": "blackhole",
-            "settings": {},
-            "tag": "blocked"
+            "tag": "block",
+            "protocol": "blackhole"
         }
     ]
 }
