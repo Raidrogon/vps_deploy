@@ -5,7 +5,7 @@ on:
       - "xray/"
       - "**/xray.yml"
 env:
-  XRAY_VERSION: v1.5.10
+  XRAY_VERSION: v1.6.0
   XRAY_DIR: xray
 
 jobs:
