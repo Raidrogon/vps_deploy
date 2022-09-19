@@ -24,11 +24,6 @@
                         "alpn": "h2",
                         "dest": "/dev/shm/h2c_443.sock",
                         "xver": 1
-                    },
-                    {
-                        "alpn": "h3",
-                        "dest": "/dev/shm/h3c_443.sock",
-                        "xver": 1
                     }
                 ]
             },
@@ -39,13 +34,12 @@
                     "serverName": "blog.imrcrab.com",
                     "alpn": [
                         "http/1.1",
-                        "h2",
-                        "h3"
+                        "h2"
                     ],
                     "certificates": [
                         {
-                            "certificateFile": "/etc/letsencrypt/live/blog.imrcrab.com/fullchain.pem",
-                            "keyFile": "/etc/letsencrypt/live/blog.imrcrab.com/privkey.pem"
+                            "certificateFile": "/etc/letsencrypt/live/ipad.imrcrab.com/fullchain.pem",
+                            "keyFile": "/etc/letsencrypt/live/ipad.imrcrab.com/privkey.pem"
                         }
                     ]
                 }
