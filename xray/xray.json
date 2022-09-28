@@ -1,45 +1,25 @@
 {
     "log": {
-        "loglevel": "error"
+        "loglevel": "debug",
+	"access": "/tmp/access.log",
+	"error": "/tmp/error.log"
     },
     "dns": {
-        "servers": [
-            "https+local://1.1.1.1/dns-query"
-        ]
+	"queryStrategy": "UseIPv4",
+	"disableCache": true,
+	"disableFallbackIfMatch": false
     },
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
             {
                 "type": "field",
-                "ip": [
-                    "geoip:private"
-                ],
-                "outboundTag": "block"
-            },
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:category-ads-all"
-                ],
-                "outboundTag": "block"
-            },
-            {
-                "type": "field",
                 "domain": [
                     "geosite:cn"
                 ],
                 "outboundTag": "block"
-            },
-            {
-                "type": "field",
-                "ip": [
-                    "geoip:cn",
-                    "geoip:private"
-                ],
-                "outboundTag": "block"
             }
-        ]
+	]
     },
     "inbounds": [
         {
@@ -49,36 +29,43 @@
                 "clients": [
                     {
                         "id": "f8ab4118-355e-4404-814e-b3229173fb29",
-                        "flow": "xtls-rprx-direct",
                         "level": 0
                     }
                 ],
                 "decryption": "none",
                 "fallbacks": [
+		    {
+		    	"dest": 80
+		    },
                     {
                         "alpn": "http/1.1",
                         "dest": 80
                     },
                     {
                         "alpn": "h2",
-                        "dest": "/dev/shm/h2c_443.sock",
+                        "dest": 80,
+                        "xver": 1
+                    },
+                    {
+                        "alpn": "h3",
+                        "dest": 80,
                         "xver": 1
                     }
                 ]
             },
             "streamSettings": {
                 "network": "tcp",
-                "security": "xtls",
-                "xtlsSettings": {
-                    "serverName": "ali.imrcrab.com",
+                "security": "tls",
+                "tlsSettings": {
+                    "serverName": "hk.imrcrab.com",
                     "alpn": [
-                        "http/1.1",
-                        "h2"
+                        "h2",
+                        "h3"
                     ],
                     "certificates": [
                         {
-                            "certificateFile": "/etc/letsencrypt/live/ipad.imrcrab.com/fullchain.pem",
-                            "keyFile": "/etc/letsencrypt/live/ipad.imrcrab.com/privkey.pem"
+                            "certificateFile": "/etc/letsencrypt/live/hk.imrcrab.com/fullchain.pem",
+                            "keyFile": "/etc/letsencrypt/live/hk.imrcrab.com/privkey.pem"
                         }
                     ]
                 }
