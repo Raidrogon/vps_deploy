@@ -4,6 +4,11 @@
         "access": "/tmp/ws_access.log",
         "error": "/tmp/ws_error.log"
     },
+    "dns": {
+        "queryStrategy": "UseIPv4",
+        "disableCache": true,
+        "disableFallbackIfMatch": false
+    },
     "inbounds": [
         {
             "listen": "/dev/shm/Xray-VLESS-WSS-Nginx.socket,0666",
@@ -42,7 +47,7 @@
             }
         },
         {
-            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-1446.socket,0666",
+            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-wss.socket,0666",
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -55,21 +60,21 @@
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "wsproject_golang"
+                    "path": "wsprojectgolang"
                 }
             }
         }
     ],
     "outbounds": [
         {
-            "tag": "direct",
             "protocol": "freedom",
-            "settings": {}
+            "settings": {
+                "domainStrategy": "UseIPv4"
+            }
         },
         {
             "tag": "blocked",
-            "protocol": "blackhole",
-            "settings": {}
+            "protocol": "blackhole"
         }
     ],
     "routing": {
@@ -78,7 +83,6 @@
             {
                 "type": "field",
                 "ip": [
-                    "geoip:private",
                     "geoip:cn"
                 ],
                 "outboundTag": "blocked"
