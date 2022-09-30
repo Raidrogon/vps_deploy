@@ -57,15 +57,15 @@
                 "network": "tcp",
                 "security": "tls",
                 "tlsSettings": {
-                    "serverName": "hk.imrcrab.com",
+                    "serverName": "ipad.imrcrab.com",
                     "alpn": [
                         "h2",
                         "h3"
                     ],
                     "certificates": [
                         {
-                            "certificateFile": "/etc/letsencrypt/live/hk.imrcrab.com/fullchain.pem",
-                            "keyFile": "/etc/letsencrypt/live/hk.imrcrab.com/privkey.pem"
+                            "certificateFile": "/etc/letsencrypt/live/ipad.imrcrab.com/fullchain.pem",
+                            "keyFile": "/etc/letsencrypt/live/ipad.imrcrab.com/privkey.pem"
                         }
                     ]
                 }
