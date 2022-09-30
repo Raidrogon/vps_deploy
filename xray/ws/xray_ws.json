@@ -1,0 +1,88 @@
+{
+    "log": {
+        "loglevel": "warning",
+        "access": "/tmp/ws_access.log",
+        "error": "/tmp/ws_error.log"
+    },
+    "inbounds": [
+        {
+            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "wsproject"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-1445.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "wsproject_vscode"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-1446.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "wsproject_golang"
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {}
+        },
+        {
+            "tag": "blocked",
+            "protocol": "blackhole",
+            "settings": {}
+        }
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:private",
+                    "geoip:cn"
+                ],
+                "outboundTag": "blocked"
+            }
+        ]
+    }
+}

@@ -2,8 +2,7 @@ name: PUSH
 on:
   push:
     paths:
-      - "xray/"
-      - "**/xray.yml"
+      - "xray/release.md"
 env:
   XRAY_VERSION: v1.6.0
   XRAY_DIR: xray
@@ -76,6 +75,17 @@ jobs:
             /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geosite.dat -O /root/xray/geosite.dat
             systemctl enable xray
             systemctl start xray
+
+            cd /root/${{ env.XRAY_DIR }}
+            mv -f ws/xray_ws.service /etc/systemd/system/xray_ws.service
+            mv -f nginx.conf /etc/nginx/conf.d/ws.conf
+            systemctl enable xray_ws
+            systemctl start xray_ws
+            
+            nginx -s reload
+            systemctl restart nginx
+
+
       - name: git push change file
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         continue-on-error: true
