@@ -1,17 +1,19 @@
 {
     "log": {
-        "loglevel": "warning",
+        "loglevel": "error",
         "access": "/tmp/ws_access.log",
         "error": "/tmp/ws_error.log"
     },
     "dns": {
-        "queryStrategy": "UseIPv4",
-        "disableCache": true,
-        "disableFallbackIfMatch": false
+	"servers":["1.1.1.1","8.8.8.8"],
+	"queryStrategy": "UseIPv4",
+	"disableCache": true,
+	"disableFallbackIfMatch": false
     },
     "inbounds": [
         {
-            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx.socket,0666",
+            "listen": "127.0.0.1",
+	    "port": 2441,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -29,7 +31,8 @@
             }
         },
         {
-            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-1445.socket,0666",
+            "listen": "127.0.0.1",
+	    "port": 2442,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -47,7 +50,8 @@
             }
         },
         {
-            "listen": "/dev/shm/Xray-VLESS-WSS-Nginx-wss.socket,0666",
+            "listen": "127.0.0.1",
+	    "port": 2443,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -67,8 +71,9 @@
     ],
     "outbounds": [
         {
+	    "tag": "direct",
             "protocol": "freedom",
-            "settings": {
+	    "settings": {
                 "domainStrategy": "UseIPv4"
             }
         },
@@ -80,6 +85,14 @@
     "routing": {
         "domainStrategy": "IPIfNonMatch",
         "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "1.1.1.1",
+		    "8.8.8.8"
+                ],
+                "outboundTag": "direct"
+            },
             {
                 "type": "field",
                 "ip": [
