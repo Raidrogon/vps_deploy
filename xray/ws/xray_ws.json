@@ -5,15 +5,17 @@
         "error": "/tmp/ws_error.log"
     },
     "dns": {
-	"servers":["1.1.1.1","8.8.8.8"],
-	"queryStrategy": "UseIPv4",
-	"disableCache": true,
-	"disableFallbackIfMatch": false
+        "servers": [
+            "1.1.1.1",
+            "8.8.8.8"
+        ],
+        "queryStrategy": "UseIPv4",
+        "disableCache": true,
+        "disableFallbackIfMatch": false
     },
     "inbounds": [
         {
-            "listen": "127.0.0.1",
-	    "port": 2441,
+            "listen": "/dev/shm/wsproject.socket,0666",
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -31,8 +33,7 @@
             }
         },
         {
-            "listen": "127.0.0.1",
-	    "port": 2442,
+            "listen": "/dev/shm/wsproject_vscode.socket,0666",
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -50,8 +51,7 @@
             }
         },
         {
-            "listen": "127.0.0.1",
-	    "port": 2443,
+            "listen": "/dev/shm/wsprojectgolang.socket,0666",
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -67,13 +67,120 @@
                     "path": "wsprojectgolang"
                 }
             }
+        },
+        {
+            "listen": "/dev/shm/news.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "news"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/pages.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "pages"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/tags.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "tags"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/categories.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "categories"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/indexs.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "indexs"
+                }
+            }
+        },
+        {
+            "listen": "/dev/shm/websocket.socket,0666",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "wsSettings": {
+                    "path": "websocket"
+                }
+            }
         }
     ],
     "outbounds": [
         {
-	    "tag": "direct",
             "protocol": "freedom",
-	    "settings": {
+            "settings": {
                 "domainStrategy": "UseIPv4"
             }
         },
@@ -89,7 +196,7 @@
                 "type": "field",
                 "ip": [
                     "1.1.1.1",
-		    "8.8.8.8"
+                    "8.8.8.8"
                 ],
                 "outboundTag": "direct"
             },
