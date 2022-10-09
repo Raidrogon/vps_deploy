@@ -15,7 +15,8 @@
     },
     "inbounds": [
         {
-            "listen": "/dev/shm/wsproject.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2441,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -33,7 +34,8 @@
             }
         },
         {
-            "listen": "/dev/shm/wsproject_vscode.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2442,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -51,7 +53,8 @@
             }
         },
         {
-            "listen": "/dev/shm/wsprojectgolang.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2443,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -69,7 +72,8 @@
             }
         },
         {
-            "listen": "/dev/shm/news.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2444,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -87,7 +91,8 @@
             }
         },
         {
-            "listen": "/dev/shm/pages.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2445,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -105,7 +110,8 @@
             }
         },
         {
-            "listen": "/dev/shm/tags.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2446,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -123,7 +129,8 @@
             }
         },
         {
-            "listen": "/dev/shm/categories.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2447,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -141,7 +148,8 @@
             }
         },
         {
-            "listen": "/dev/shm/indexs.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2448,
             "protocol": "vless",
             "settings": {
                 "clients": [
@@ -159,7 +167,8 @@
             }
         },
         {
-            "listen": "/dev/shm/websocket.socket,0666",
+            "listen": "127.0.0.1",
+            "port": 2449,
             "protocol": "vless",
             "settings": {
                 "clients": [
