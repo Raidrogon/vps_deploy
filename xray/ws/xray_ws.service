@@ -5,12 +5,10 @@ After=network.target
 [Service]
 User=root
 PermissionsStartOnly=false
-ExecStartPre=/bin/rm -rf /dev/shm/categories.socket /dev/shm/categories.socket.lock /dev/shm/indexs.socket /dev/shm/indexs.socket.lock /dev/shm/news.socket /dev/shm/news.socket.lock /dev/shm/pages.socket /dev/shm/pages.socket.lock /dev/shm/tags.socket /dev/shm/tags.socket.lock /dev/shm/websocket.socket /dev/shm/websocket.socket.lock /dev/shm/wsproject.socket /dev/shm/wsproject.socket.lock /dev/shm/wsproject_vscode.socket /dev/shm/wsproject_vscode.socket.lock /dev/shm/wsprojectgolang.socket /dev/shm/wsprojectgolang.socket.lock
 ExecStart=/root/xray/xray run -config /root/xray/ws/xray_ws.json
 Restart=on-failure
-WatchdogSec=15s
 LimitNOFILE=10240:40960
-RestartSec=2s
+
 
 [Install]
 WantedBy=multi-user.target
