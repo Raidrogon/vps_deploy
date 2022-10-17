@@ -37,6 +37,6 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            iptables-restore < iptables.conf
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
             /usr/sbin/netfilter-persistent save
             echo "${{ steps.date.outputs.today }}" >> it_change
