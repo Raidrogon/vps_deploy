@@ -1,73 +1,178 @@
 {
     "log": {
-        "loglevel": "debug",
-	"access": "/tmp/access.log",
-	"error": "/tmp/error.log"
+        "loglevel": "warning",
+        "access": "/tmp/grpc_access.log",
+        "error": "/tmp/grpc_error.log"
     },
     "dns": {
-	"queryStrategy": "UseIPv4",
-	"disableCache": true,
-	"disableFallbackIfMatch": false
-    },
-    "routing": {
-        "domainStrategy": "IPIfNonMatch",
-        "rules": [
-            {
-                "type": "field",
-                "domain": [
-                    "geosite:cn"
-                ],
-                "outboundTag": "block"
-            }
-	]
+        "servers": [
+            "1.1.1.1",
+            "8.8.8.8"
+        ],
+        "queryStrategy": "UseIPv4",
+        "disableCache": true,
+        "disableFallbackIfMatch": false
     },
     "inbounds": [
         {
-            "port": 1443,
-            "protocol": "vless",
+            "listen": "127.0.0.1",
+            "port": 2551,
+            "protocol": "trojan",
             "settings": {
                 "clients": [
                     {
-                        "id": "f8ab4118-355e-4404-814e-b3229173fb29",
-                        "level": 0
-                    }
-                ],
-                "decryption": "none",
-                "fallbacks": [
-		    {
-		    	"dest": 80
-		    },
-                    {
-                        "alpn": "http/1.1",
-                        "dest": 80
-                    },
-                    {
-                        "alpn": "h2",
-                        "dest": 80,
-                        "xver": 1
-                    },
-                    {
-                        "alpn": "h3",
-                        "dest": 80,
-                        "xver": 1
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
                     }
                 ]
             },
             "streamSettings": {
-                "network": "tcp",
-                "security": "tls",
-                "tlsSettings": {
-                    "serverName": "ipad.imrcrab.com",
-                    "alpn": [
-                        "h2",
-                        "h3"
-                    ],
-                    "certificates": [
-                        {
-                            "certificateFile": "/etc/letsencrypt/live/ipad.imrcrab.com/fullchain.pem",
-                            "keyFile": "/etc/letsencrypt/live/ipad.imrcrab.com/privkey.pem"
-                        }
-                    ]
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcservice"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2552,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcservicea"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2553,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcserviceb"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2554,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcservicec"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2555,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcserviced"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2556,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcservicee"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2557,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcservicef"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2558,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcserviceg"
+                }
+            }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": 2559,
+            "protocol": "trojan",
+            "settings": {
+                "clients": [
+                    {
+                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "grpc",
+                "grpcSettings": {
+                    "serviceName": "grpcserviceh"
                 }
             }
         }
@@ -77,11 +182,32 @@
             "protocol": "freedom",
             "settings": {
                 "domainStrategy": "UseIPv4"
-            }
+            },
+            "tag": "direct"
         },
         {
-            "tag": "block",
+            "tag": "blocked",
             "protocol": "blackhole"
         }
-    ]
+    ],
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "ip": [
+                    "1.1.1.1",
+                    "8.8.8.8"
+                ],
+                "outboundTag": "direct"
+            },
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn"
+                ],
+                "outboundTag": "blocked"
+            }
+        ]
+    }
 }
