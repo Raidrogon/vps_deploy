@@ -1,8 +1,8 @@
 {
     "log": {
         "loglevel": "warning",
-        "access": "/tmp/grpc_access.log",
-        "error": "/tmp/grpc_error.log"
+        "access": "/tmp/xtls_access.log",
+        "error": "/tmp/xtls_error.log"
     },
     "dns": {
         "servers": [
@@ -15,164 +15,34 @@
     },
     "inbounds": [
         {
-            "listen": "127.0.0.1",
-            "port": 2551,
-            "protocol": "trojan",
+            "listen": "0.0.0.0",
+            "port": 1443,
+            "protocol": "vless",
             "settings": {
                 "clients": [
                     {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
+                        "flow": "xtls-rprx-direct",
+                        "level": 0,
+                        "id": "f8ab4118-355e-4404-814e-b3229173fb29"
                     }
-                ]
+                ],
+                "decryption": "none"
             },
             "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcservice"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2552,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcservicea"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2553,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcserviceb"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2554,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcservicec"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2555,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcserviced"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2556,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcservicee"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2557,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcservicef"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2558,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcserviceg"
-                }
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": 2559,
-            "protocol": "trojan",
-            "settings": {
-                "clients": [
-                    {
-                        "password": "f8ab4118-355e-4404-814e-b3229173fb29"
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "grpc",
-                "grpcSettings": {
-                    "serviceName": "grpcserviceh"
+                "network": "tcp",
+                "security": "xtls",
+                "xtlsSettings": {
+                    "serverName": "fq.imrcrab.com",
+                    "rejectUnknownSni": true,
+                    "alpn": [
+                        "h3"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/root/fq.imrcrab.com/fq.imrcrab.com_bundle.pem",
+                            "keyFile": "/root/fq.imrcrab.com/fq.imrcrab.com.key"
+                        }
+                    ]
                 }
             }
         }
@@ -205,6 +75,14 @@
                 "type": "field",
                 "ip": [
                     "geoip:cn"
+                ],
+                "outboundTag": "blocked"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "geosite:cn",
+                    "geosite:category-games@cn"
                 ],
                 "outboundTag": "blocked"
             }
