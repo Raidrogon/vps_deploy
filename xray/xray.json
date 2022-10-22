@@ -32,15 +32,15 @@
                 "network": "tcp",
                 "security": "xtls",
                 "xtlsSettings": {
-                    "serverName": "fq.imrcrab.com",
+                    "serverName": "ali.imrcrab.com",
                     "rejectUnknownSni": true,
                     "alpn": [
-                        "h3"
+                        "h3","h2"
                     ],
                     "certificates": [
                         {
-                            "certificateFile": "/root/fq.imrcrab.com/fq.imrcrab.com_bundle.pem",
-                            "keyFile": "/root/fq.imrcrab.com/fq.imrcrab.com.key"
+                            "certificateFile": "/root/ali.imrcrab.com/ali.imrcrab.com_bundle.pem",
+                            "keyFile": "/root/ali.imrcrab.com/ali.imrcrab.com.key"
                         }
                     ]
                 }
