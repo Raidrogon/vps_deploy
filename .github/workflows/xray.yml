@@ -66,6 +66,9 @@ jobs:
             cd /root/${{ env.XRAY_DIR }}
             cat sysctl.conf >> /etc/sysctl.conf
             sysctl -p
+            rm -rf /etc/localtime                                                                                                                                         [6:30:31]
+            ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+            
             apt install -y unzip
             unzip Xray-linux-64.zip
             rm -rf Xray-linux-64.zip
