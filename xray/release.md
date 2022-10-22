@@ -21,3 +21,7 @@ dmit-hk
 
 
 dmit-hk
+
+
+
+vmshell-hk
