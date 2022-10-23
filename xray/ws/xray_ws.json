@@ -371,6 +371,14 @@
                 ],
                 "outboundTag": "direct"
             },
+             {
+                "type": "field",
+                "domain": [
+                    "ssl.gstatic.com",
+                    "fonts.googleapis.com"
+                ],
+                "outboundTag": "direct"
+            },
             {
                 "type": "field",
                 "ip": [
