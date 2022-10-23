@@ -35,7 +35,8 @@
                     "serverName": "ali.imrcrab.com",
                     "rejectUnknownSni": true,
                     "alpn": [
-                        "h3","h2"
+                        "h3",
+                        "h2"
                     ],
                     "certificates": [
                         {
@@ -69,6 +70,17 @@
                     "1.1.1.1",
                     "8.8.8.8"
                 ],
+                "domain": [
+                    "ssl.gstatic.com"
+                ],
+                "outboundTag": "direct"
+            },
+            {
+                "type": "field",
+                "domain": [
+                    "ssl.gstatic.com",
+                    "fonts.googleapis.com"
+                ],
                 "outboundTag": "direct"
             },
             {
@@ -82,8 +94,9 @@
                 "type": "field",
                 "domain": [
                     "geosite:cn",
-                    "geosite:category-games@cn",
-                    "geosite:category-ads-all"
+                    "geosite:tld-cn",
+                    "geosite:category-ads-all",
+                    "geosite:category-games@cn"
                 ],
                 "outboundTag": "blocked"
             }
