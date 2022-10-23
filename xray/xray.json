@@ -82,7 +82,8 @@
                 "type": "field",
                 "domain": [
                     "geosite:cn",
-                    "geosite:category-games@cn"
+                    "geosite:category-games@cn",
+                    "geosite:category-ads-all"
                 ],
                 "outboundTag": "blocked"
             }
