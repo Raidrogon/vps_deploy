@@ -25,7 +25,6 @@ jobs:
         run: |
           cd ${{ env.XRAY_DIR }}
           ls -all
-          ./tools
           ls -all
           result=$(ls |wc -l)
           rs='false'
