@@ -25,3 +25,8 @@ dmit-hk
 
 
 vmshell-hk
+
+
+
+
+vmshell-hk-china
