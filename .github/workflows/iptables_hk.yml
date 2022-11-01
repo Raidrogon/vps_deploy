@@ -2,7 +2,8 @@ name: PUSH
 on:
   push:
     paths:
-      - "iptables/dmit-hk"
+      - "iptables/dmit-hk/iptables.conf"
+      - "iptables/dmit-hk/release.md"
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 
