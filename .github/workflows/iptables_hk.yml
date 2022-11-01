@@ -2,12 +2,12 @@ name: PUSH
 on:
   push:
     paths:
-      - "iptables/dmit-hk/release.md"
+      - "iptables/dmit-hk"
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 
 jobs:
-  build:
+  dmit-us:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
@@ -22,21 +22,124 @@ jobs:
       - name: copy file via ssh key
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.VPS_HOST }}
+          host: ${{ secrets.VPS_HOST_US }}
           username: ${{ secrets.VPS_USERNAME }}
           port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY }}
+          key: ${{ secrets.VPS_KEY_US }}
           source: "./${{ env.XRAY_DIR }}"
           target: "/root"
       - name: restore iptables from file
         uses: appleboy/ssh-action@master
         with:
           overwrite: true
-          host: ${{ secrets.VPS_HOST }}
+          host: ${{ secrets.VPS_HOST_US }}
           username: ${{ secrets.VPS_USERNAME }}
           port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY }}
+          key: ${{ secrets.VPS_KEY_US }}
           script: |
             iptables-restore < /root/iptables/dmit-hk/iptables.conf
             /usr/sbin/netfilter-persistent save
             echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
+  dmit-hk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_DMIT_HK }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_DMIT_HK }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_DMIT_HK }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_DMIT_HK }}
+          script: |
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
+  vm-19:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
+          script: |
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
+  vm-66:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
+          script: |
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
