@@ -18,3 +18,6 @@ vmshell-hk-china
 
 
 combine first
+
+
+tcp->1445 udp->1443
