@@ -7,7 +7,8 @@ b_ip_path="ip_black"
 cat before.conf > iptables.conf
 
 if [[ -f "${w_ip_path}" ]]; then
-      cat ${w_ip_path} | while read line
+      # cat ${w_ip_path} | while read line
+      while read line || [[ -n ${line} ]]
       do
             for ele in ${port_list[@]}
             do 
@@ -16,12 +17,12 @@ if [[ -f "${w_ip_path}" ]]; then
                   fi
                   echo "-A INPUT -s ${line} -p tcp -m tcp --dport ${ele} -j ACCEPT" >> iptables.conf
             done
-      done
+      done < ${w_ip_path}
 fi
 
 
 if [[ -f "${b_ip_path}" ]]; then
-      cat ${b_ip_path} | while read line
+      while read line || [[ -n ${line} ]]
       do
             for ele in ${port_list[@]}
             do 
@@ -30,7 +31,7 @@ if [[ -f "${b_ip_path}" ]]; then
                   fi
                   echo "-A INPUT -s ${line} -p tcp -m tcp --dport ${ele} -j DROP" >> iptables.conf
             done
-      done
+      done < ${b_ip_path}
 fi
 
 cat end.conf >> iptables.conf
