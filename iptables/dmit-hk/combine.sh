@@ -12,7 +12,7 @@ if [[ -f "${w_ip_path}" ]]; then
       do
             for ele in ${port_list[@]}
             do 
-                  if [[ "${line}" =~ ^\#.* ]];then
+                  if [[ "${line}" =~ ^\#.* ]] || [[ ! -n ${line} ]];then
                         continue
                   fi
                   echo "-A INPUT -s ${line} -p tcp -m tcp --dport ${ele} -j ACCEPT" >> iptables.conf
@@ -26,7 +26,7 @@ if [[ -f "${b_ip_path}" ]]; then
       do
             for ele in ${port_list[@]}
             do 
-                  if [[ "${line}" =~ ^\#.* ]];then
+                  if [[ "${line}" =~ ^\#.* ]] || [[ ! -n ${line} ]];then
                         continue
                   fi
                   echo "-A INPUT -s ${line} -p tcp -m tcp --dport ${ele} -j DROP" >> iptables.conf
