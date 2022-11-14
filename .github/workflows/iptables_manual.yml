@@ -4,7 +4,11 @@ on:
     inputs:
       ipwhite:
         description: 'add white ip'     
-        required: true
+        required: false
+      rip:
+        description: 'remove white ip by regex'     
+        required: false
+        default: default
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 
@@ -28,6 +32,11 @@ jobs:
           cd iptables/dmit-hk
           chmod +x combine.sh
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          if [[ -n ${{ github.event.inputs.rip }} ]];then
+            cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+          fi
           ./combine.sh
           cd ../../
         shell: bash
@@ -70,6 +79,11 @@ jobs:
           cd iptables/dmit-hk
           chmod +x combine.sh
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          if [[ -n ${{ github.event.inputs.rip }} ]];then
+            cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+          fi
           ./combine.sh
           cd ../../
         shell: bash
@@ -112,6 +126,11 @@ jobs:
           cd iptables/dmit-hk
           chmod +x combine.sh
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          if [[ -n ${{ github.event.inputs.rip }} ]];then
+            cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+          fi
           ./combine.sh
           cd ../../
         shell: bash
@@ -154,6 +173,11 @@ jobs:
           cd iptables/dmit-hk
           chmod +x combine.sh
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          if [[ -n ${{ github.event.inputs.rip }} ]];then
+            cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+          fi
           ./combine.sh
           cd ../../
         shell: bash
@@ -198,10 +222,15 @@ jobs:
           cd iptables/dmit-hk
           chmod +x combine.sh
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          if [[ -n ${{ github.event.inputs.rip }} ]];then
+            cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+          fi
           cd ../../
         shell: bash
       - name: Commit & Push changes
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'chore: autopublish: ${{ github.event.inputs.ipwhite }}  ${{ steps.date.outputs.today }} '
+          message: 'chore: autopublish:  ${{ steps.date.outputs.today }}'
