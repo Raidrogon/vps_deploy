@@ -180,3 +180,29 @@ jobs:
             /usr/sbin/netfilter-persistent save
             echo "${{ steps.date.outputs.today }}" >> it_change
             rm -rf /root/iptables
+
+
+  commit-push-ip:
+    needs: [dmit-us,dmit-hk,vm-19,vm-66]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: Combine ip
+        run: |
+          cd iptables/dmit-hk
+          chmod +x combine.sh
+          echo "${{ github.event.inputs.ipwhite }}" >> ip_white
+          cd ../../
+        shell: bash
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'chore: autopublish ${date}'
