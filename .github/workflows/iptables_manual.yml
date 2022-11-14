@@ -1,4 +1,4 @@
-name: PUSH
+name: manual add ip
 on: 
   workflow_dispatch:
     inputs:
