@@ -206,6 +206,8 @@ jobs:
 
 
   commit-push-ip:
+  # https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds
+    if: ${{ always() }}
     needs: [dmit-us,dmit-hk,vm-19,vm-66]
     runs-on: ubuntu-latest
     steps:
