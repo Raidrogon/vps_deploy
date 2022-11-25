@@ -33,3 +33,6 @@ vmshell-hk-china
 
 
 vmshell-hk-china
+
+
+dmit-hk
