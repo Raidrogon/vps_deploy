@@ -8,6 +8,7 @@ on:
       rip:
         description: 'remove white ip by regex'     
         required: false
+        default: 127.0.0.1
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 
