@@ -1,6 +1,6 @@
 #!/bin/bash
 
-port_list=(443 1443 1444 1445)
+port_list=(443 1443 1444 1445 1446 1447 1448 1449 1450)
 w_ip_path="ip_white"
 b_ip_path="ip_black"
 
