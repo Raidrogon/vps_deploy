@@ -4,7 +4,7 @@ on:
     paths:
       - "xray/release.md"
 env:
-  XRAY_VERSION: v1.6.0
+  XRAY_VERSION: v1.6.5
   XRAY_DIR: xray
 
 jobs:
@@ -80,27 +80,31 @@ jobs:
             cd /root/${{ env.XRAY_DIR }}
             cat sysctl.conf >> /etc/sysctl.conf
             sysctl -p
-            rm -rf /etc/localtime                                                                                                                                         [6:30:31]
+            rm -rf /etc/localtime
             ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
             
             apt install -y unzip
             unzip Xray-linux-64.zip
             rm -rf Xray-linux-64.zip
             chmod +x xray
-            mv -f xray.service /etc/systemd/system/xray.service
             /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geoip.dat -O /root/xray/geoip.dat
             /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geosite.dat -O /root/xray/geosite.dat
-            systemctl enable xray
-            systemctl start xray
+            
+            mv -f xray.service /etc/systemd/system/xray.service
+            mv -f xray1445.service /etc/systemd/system/xray1445.service
+            mv -f xray1446.service /etc/systemd/system/xray1446.service
+            systemctl enable --now xray
 
+            systemctl enable --now xray1445
+            systemctl enable --now xray1446
             cd /root/${{ env.XRAY_DIR }}
             mv -f ws/xray_ws.service /etc/systemd/system/xray_ws.service
             mv -f nginx.conf /etc/nginx/conf.d/ws.conf
-            systemctl enable xray_ws
-            systemctl start xray_ws
+            # systemctl enable xray_ws
+            # systemctl start xray_ws
             
-            nginx -s reload
-            systemctl restart nginx
+            # nginx -s reload
+            # systemctl restart nginx
 
 
       - name: git push change file

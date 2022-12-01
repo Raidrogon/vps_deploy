@@ -1,0 +1,13 @@
+[Unit]
+Description=xray xtls server start
+After=network.target
+
+[Service]
+PermissionsStartOnly=true
+ExecStart=/root/xray/xray run -config /root/xray/xray1445.json
+Restart=on-failure
+LimitNOFILE=10240:40960
+
+
+[Install]
+WantedBy=multi-user.target

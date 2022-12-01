@@ -1,8 +1,8 @@
 {
     "log": {
         "loglevel": "warning",
-        "access": "/tmp/xtls_access.log",
-        "error": "/tmp/xtls_error.log"
+        "access": "/tmp/1445xtls_access.log",
+        "error": "/tmp/1445xtls_error.log"
     },
     "dns": {
         "servers": [
@@ -16,12 +16,11 @@
     "inbounds": [
         {
             "listen": "0.0.0.0",
-            "port": 1444,
+            "port": 1445,
             "protocol": "vless",
             "settings": {
                 "clients": [
                     {
-                        "flow": "xtls-rprx-vision",
                         "level": 0,
                         "id": "f8ab4118-355e-4404-814e-b3229173fb29"
                     }

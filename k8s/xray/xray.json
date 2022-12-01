@@ -1,6 +1,6 @@
 {
     "log": {
-        "loglevel": "warning",
+        "loglevel": "debug",
         "access": "/tmp/xtls_access.log",
         "error": "/tmp/xtls_error.log"
     },
@@ -16,12 +16,12 @@
     "inbounds": [
         {
             "listen": "0.0.0.0",
-            "port": 1444,
+            "port": 11443,
             "protocol": "vless",
             "settings": {
                 "clients": [
                     {
-                        "flow": "xtls-rprx-vision",
+                        "flow": "xtls-rprx-direct",
                         "level": 0,
                         "id": "f8ab4118-355e-4404-814e-b3229173fb29"
                     }
@@ -30,20 +30,20 @@
             },
             "streamSettings": {
                 "network": "tcp",
-                "security": "tls",
-                "tlsSettings": {
-                    "serverName": "vmsl.imrcrab.com",
+                "security": "xtls",
+                "xtlsSettings": {
+                    "serverName": "fq.imrcrab.com",
                     "rejectUnknownSni": true,
                     "alpn": [
                         "h3",
                         "h2"
                     ],
                     "cipherSuites": "TLS13-AES128-GCM-SHA256:TLS13-AES256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES128-CCM-SHA256",
-                    "minVersion": "1.2",
+                    "minVersion": "1.3",
                     "certificates": [
                         {
-                            "certificateFile": "/root/vmsl.imrcrab.com/vmsl.imrcrab.com_bundle.pem",
-                            "keyFile": "/root/vmsl.imrcrab.com/vmsl.imrcrab.com.key"
+                            "certificateFile": "/xray/xray.pem",
+                            "keyFile": "/xray/xray.key"
                         }
                     ]
                 }
@@ -80,8 +80,10 @@
             {
                 "type": "field",
                 "domain": [
-                    "gstatic.com",
-                    "googleapis.com"
+                    "ssl.gstatic.com",
+                    "static.com",
+                    "googleapis.com",
+                    "fonts.googleapis.com"
                 ],
                 "outboundTag": "direct"
             },

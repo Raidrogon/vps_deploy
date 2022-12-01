@@ -1,0 +1,218 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xray
+  namespace: default
+  labels:
+    app: xray
+    app.kubernetes.io/name: xray
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xray
+  template:
+    metadata:
+      labels:
+        app: xray
+    spec:
+      containers:
+        - name: xray
+          image: docker.io/imrcrab/xray:v1.6.4.5
+          ports:
+          - containerPort: 11443
+            name: tcp-xray
+          volumeMounts:
+            - name: xray-config
+              mountPath: /xray
+      volumes:
+        - name: xray-config
+          configMap:
+            name: xray-configs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-xray
+spec:
+  selector:
+    app: xray
+  ports:
+    - protocol: TCP
+      port: 32498
+      targetPort: tcp-xray
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-envoy
+spec:
+  type: NodePort
+  selector:
+    app: envoy
+  ports:
+    - protocol: TCP
+      port: 10000
+      targetPort: 10000
+      nodePort: 31443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: envoy
+  template:
+    metadata:
+      labels:
+        app: envoy
+    spec:
+      containers:
+        - args:
+            - -c
+            - /etc/envoy/bootstrap.yaml
+          image: envoyproxy/envoy:v1.25-latest
+          name: envoy
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 10m
+              memory: 256Mi
+          readinessProbe:
+            periodSeconds: 10
+            httpGet:
+              path: /ready
+              port: 19901
+          volumeMounts:
+            - mountPath: /etc/envoy
+              name: envoy
+      volumes:
+        - name: envoy
+          configMap:
+            name: envoy
+---
+apiVersion: v1
+data:
+  bootstrap.yaml: |
+    # bootstrap.yaml
+    node:
+      cluster: test-cluster
+      id: test-id
+
+    # receive a request of readiness probe via the listener
+    admin:
+      address:
+        socket_address:
+          address: 127.0.0.1
+          port_value: 9901
+      access_log:
+        - name: envoy.access_loggers.stdout
+          typed_config:
+            "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+
+    dynamic_resources:
+      cds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /etc/envoy/cds.yaml
+          # only if using a ConfigMap
+          # https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/config_source.proto#envoy-v3-api-msg-config-core-v3-pathconfigsource
+          watched_directory:
+            path: /etc/envoy
+      lds_config:
+        resource_api_version: V3
+        path_config_source:
+          path: /etc/envoy/lds.yaml
+          # only if using a ConfigMap
+          # https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/core/v3/config_source.proto#envoy-v3-api-msg-config-core-v3-pathconfigsource
+          watched_directory:
+            path: /etc/envoy
+  cds.yaml: |
+    # /etc/envoy/cds.yaml
+    resources:
+      - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+        name: cluster_0
+        connect_timeout: 30s
+        type: LOGICAL_DNS
+        dns_lookup_family: V4_ONLY
+        load_assignment:
+          cluster_name: cluster_0
+          endpoints:
+            - lb_endpoints:
+                - endpoint:
+                    address:
+                      socket_address:
+                        address: service-xray
+                        port_value: 32498
+
+      # expose the admin endpoint for readiness probe
+      - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+        name: admin_cluster
+        connect_timeout: 30s
+        type: LOGICAL_DNS
+        dns_lookup_family: V4_ONLY
+        load_assignment:
+          cluster_name: admin_cluster
+          endpoints:
+            - lb_endpoints:
+                - endpoint:
+                    address:
+                      socket_address:
+                        address: 127.0.0.1
+                        port_value: 9901
+  lds.yaml: |
+    # /etc/envoy/lds.yaml
+    resources:
+      - "@type": type.googleapis.com/envoy.config.listener.v3.Listener
+        name: listener_0
+        address:
+          socket_address:
+            address: 0.0.0.0
+            port_value: 10000
+        filter_chains:
+          - filters:
+              - name: envoy.filters.network.tcp_proxy
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.filters.network.tcp_proxy.v3.TcpProxy
+                  stat_prefix: destination
+                  cluster: cluster_0
+                  access_log:
+                    - name: envoy.access_loggers.stdout
+                      typed_config:
+                        "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+
+      # expose the admin endpoint for readiness probe
+      - "@type": type.googleapis.com/envoy.config.listener.v3.Listener
+        name: ready_listener
+        address:
+          socket_address:
+            address: 0.0.0.0
+            port_value: 19901
+        filter_chains:
+          - filters:
+              - name: envoy.filters.network.http_connection_manager
+                typed_config:
+                  "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                  stat_prefix: ready_listener
+                  http_filters:
+                    - name: envoy.filters.http.router
+                      typed_config:
+                        "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+                  route_config:
+                    name: local_route
+                    virtual_hosts:
+                      - name: local_service
+                        domains: ["*"]
+                        routes:
+                          - match:
+                              path: "/ready"
+                            route:
+                              cluster: admin_cluster
+kind: ConfigMap
+metadata:
+  name: envoy
+  namespace: default
