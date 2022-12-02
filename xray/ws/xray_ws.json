@@ -48,7 +48,7 @@
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "wsproject_vscode"
+                    "path": "jectvscode"
                 }
             }
         },
@@ -374,8 +374,8 @@
              {
                 "type": "field",
                 "domain": [
-                    "ssl.gstatic.com",
-                    "fonts.googleapis.com"
+                    "gstatic.com",
+                    "googleapis.com"
                 ],
                 "outboundTag": "direct"
             },

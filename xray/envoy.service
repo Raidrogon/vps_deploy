@@ -1,10 +1,10 @@
 [Unit]
-Description=xray xtls server start
+Description=envoy server start
 After=network.target
 
 [Service]
 PermissionsStartOnly=true
-ExecStart=/root/xray/xray run -config /root/xray/xray.json
+ExecStart=/usr/bin/envoy -c /root/xray/envoy.yaml
 Restart=on-failure
 LimitNOFILE=10240:40960
 

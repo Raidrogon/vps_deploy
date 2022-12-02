@@ -62,17 +62,13 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            apt install -y curl gnupg2 ca-certificates lsb-release debian-archive-keyring
-            curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-            gpg --dry-run --quiet --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg
-            echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-            http://nginx.org/packages/debian `lsb_release -cs` nginx"     | tee /etc/apt/sources.list.d/nginx.list
-            echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-            http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx"     | tee /etc/apt/sources.list.d/nginx.list
-            echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n"     | tee /etc/apt/preferences.d/99nginx
-            apt update
-            apt install -y nginx
-
+            apt update -y
+            apt install -y debian-keyring debian-archive-keyring apt-transport-https curl lsb-release
+            curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg
+            echo a077cb587a1b622e03aa4bf2f3689de14658a9497a9af2c427bba5f4cc3c4723 /usr/share/keyrings/getenvoy-keyring.gpg | sha256sum --check
+            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/debian $(lsb_release -cs) main" |             tee /etc/apt/sources.list.d/getenvoy.list
+            apt update -y
+            apt install -y getenvoy-envoy
             apt install -y net-tools
             apt install -y vnstat vnstati
             chmod +x /root/vnstat.sh
@@ -90,23 +86,15 @@ jobs:
             /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geoip.dat -O /root/xray/geoip.dat
             /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geosite.dat -O /root/xray/geosite.dat
             
-            mv -f xray.service /etc/systemd/system/xray.service
-            mv -f xray1445.service /etc/systemd/system/xray1445.service
-            mv -f xray1446.service /etc/systemd/system/xray1446.service
-            systemctl enable --now xray
-
-            systemctl enable --now xray1445
-            systemctl enable --now xray1446
             cd /root/${{ env.XRAY_DIR }}
             mv -f ws/xray_ws.service /etc/systemd/system/xray_ws.service
-            mv -f nginx.conf /etc/nginx/conf.d/ws.conf
-            # systemctl enable xray_ws
-            # systemctl start xray_ws
+            systemctl enable --now xray_ws.service
+            mv -f envoy.service /etc/systemd/system/envoy.service
+            systemctl enable --now envoy.service
+
+            chmod +x log.sh
+            ./log.sh
             
-            # nginx -s reload
-            # systemctl restart nginx
-
-
       - name: git push change file
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         continue-on-error: true
