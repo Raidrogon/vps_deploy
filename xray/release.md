@@ -38,3 +38,4 @@ vmshell-hk-china
 dmit-hk
 
 vm-66
+vm-19
