@@ -49,13 +49,14 @@ done
 cat template/envoy.yaml | sed 's/domain.imrcrab.com/'${1}'.imrcrab.com/g'  > envoy_${i}.yaml
 cat template/envoy.service > /etc/systemd/system/envoy.service 
 
-cat ws/xray_ws.service > /etc/systemd/system/xray_ws.service  
+# cat ws/xray_ws.service > /etc/systemd/system/xray_ws.service  
+# systemctl enable --now envoy.service
+
 sleep 1s
 ls /etc/systemd/system | grep xray | xargs systemctl enable --now
 sleep 2s
 ls /etc/systemd/system | grep xray | xargs systemctl restart
 sleep 2s
-systemctl enable --now envoy.service
 
 
 
