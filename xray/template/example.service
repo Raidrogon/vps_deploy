@@ -1,0 +1,14 @@
+[Unit]
+Description=xray xxxx server start
+After=network.target
+
+[Service]
+User=root
+PermissionsStartOnly=false
+ExecStart=/root/xray/xray run -config /root/xray/vision/xray_xxxx.json
+Restart=on-failure
+LimitNOFILE=10240:40960
+
+
+[Install]
+WantedBy=multi-user.target

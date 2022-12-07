@@ -108,7 +108,7 @@ static_resources:
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
                       path: /tmp/envoyfilelog.log
-    - name: listener_5
+    - name: listener_6
       address:
         socket_address:
           address: 0.0.0.0
@@ -126,7 +126,7 @@ static_resources:
                     typed_config:
                       "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
                       path: /tmp/envoyfilelog.log
-    - name: listener_6
+    - name: listener_7
       address:
         socket_address:
           address: 0.0.0.0
@@ -162,7 +162,7 @@ static_resources:
               virtual_hosts:
               - name: app
                 domains:
-                - "ali.imrcrab.com"
+                - "domain.imrcrab.com"
                 routes:
                 - match:
                     prefix: "/wsproject"
@@ -173,9 +173,9 @@ static_resources:
                   route:
                     cluster: wsprojectvscode
                 - match:
-                    prefix: "/wsprojectgolang"
+                    prefix: "/golangwang"
                   route:
-                    cluster: wsprojectgolang
+                    cluster: golangwang
                 - match:
                     prefix: "/news"
                   route:
@@ -195,9 +195,9 @@ static_resources:
             common_tls_context:
               tls_certificates:
                 - certificate_chain:
-                    filename: /root/ali.imrcrab.com/ali.imrcrab.com_bundle.pem
+                    filename: /root/domain.imrcrab.com/domain.imrcrab.com_bundle.pem
                   private_key:
-                    filename: /root/ali.imrcrab.com/ali.imrcrab.com.key
+                    filename: /root/domain.imrcrab.com/domain.imrcrab.com.key
   clusters:
     - name: cluster_0
       connect_timeout: 30s
@@ -275,12 +275,12 @@ static_resources:
                 socket_address:
                   address: 127.0.0.1
                   port_value: 2442
-    - name: wsprojectgolang
+    - name: golangwang
       type: STRICT_DNS
       connect_timeout: 30s
       lb_policy: ROUND_ROBIN
       load_assignment:
-        cluster_name: wsprojectgolang
+        cluster_name: golangwang
         endpoints:
         - lb_endpoints:
           - endpoint:

@@ -67,7 +67,7 @@
             "streamSettings": {
                 "network": "ws",
                 "wsSettings": {
-                    "path": "wsprojectgolang"
+                    "path": "golangwang"
                 }
             }
         },

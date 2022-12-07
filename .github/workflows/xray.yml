@@ -1,8 +1,11 @@
-name: PUSH
-on:
-  push:
-    paths:
-      - "xray/release.md"
+name: Deploy xray for server
+on: 
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'add domain'     
+        required: true
+        default: fq.imrcrab.com
 env:
   XRAY_VERSION: v1.6.5
   XRAY_DIR: xray
@@ -62,38 +65,9 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY }}
           script: |
-            apt update -y
-            apt install -y debian-keyring debian-archive-keyring apt-transport-https curl lsb-release
-            curl -sL 'https://deb.dl.getenvoy.io/public/gpg.8115BA8E629CC074.key' | gpg --dearmor -o /usr/share/keyrings/getenvoy-keyring.gpg
-            echo a077cb587a1b622e03aa4bf2f3689de14658a9497a9af2c427bba5f4cc3c4723 /usr/share/keyrings/getenvoy-keyring.gpg | sha256sum --check
-            echo "deb [arch=amd64 signed-by=/usr/share/keyrings/getenvoy-keyring.gpg] https://deb.dl.getenvoy.io/public/deb/debian $(lsb_release -cs) main" |             tee /etc/apt/sources.list.d/getenvoy.list
-            apt update -y
-            apt install -y getenvoy-envoy
-            apt install -y net-tools
-            apt install -y vnstat vnstati
-            chmod +x /root/vnstat.sh
-
             cd /root/${{ env.XRAY_DIR }}
-            cat sysctl.conf >> /etc/sysctl.conf
-            sysctl -p
-            rm -rf /etc/localtime
-            ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-            
-            apt install -y unzip
-            unzip Xray-linux-64.zip
-            rm -rf Xray-linux-64.zip
-            chmod +x xray
-            /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geoip.dat -O /root/xray/geoip.dat
-            /usr/bin/wget -v -N  https://github.com/crab21/v2ray-rules-dat/releases/latest/download/geosite.dat -O /root/xray/geosite.dat
-            
-            cd /root/${{ env.XRAY_DIR }}
-            mv -f ws/xray_ws.service /etc/systemd/system/xray_ws.service
-            systemctl enable --now xray_ws.service
-            mv -f envoy.service /etc/systemd/system/envoy.service
-            systemctl enable --now envoy.service
-
-            chmod +x log.sh
-            ./log.sh
+            chmod +x xray_template_install.sh
+            ./xray_template_install.sh ${{ github.event.inputs.domain }}
             
       - name: git push change file
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
