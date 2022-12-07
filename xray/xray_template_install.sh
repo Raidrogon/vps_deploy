@@ -42,11 +42,11 @@ mkdir -p vision
 
 for i in {1451..1460}
 do
-    cat template/example.json | sed 's/domain.imrcrab.com/'${1}'.imrcrab.com/g' | sed 's/xxxx/'${i}'/g' > vision/xray_${i}.json
+    cat template/example.json | sed 's/domain.imrcrab.com/'${1}'/g' | sed 's/xxxx/'${i}'/g' > vision/xray_${i}.json
     cat template/example.service | sed 's/xxxx/'${i}'/g' > /etc/systemd/system/xray_${i}.service
 done
 
-cat template/envoy.yaml | sed 's/domain.imrcrab.com/'${1}'.imrcrab.com/g'  > envoy_${i}.yaml
+cat template/envoy.yaml | sed 's/domain.imrcrab.com/'${1}'/g'  > envoy_${i}.yaml
 cat template/envoy.service > /etc/systemd/system/envoy.service 
 
 # cat ws/xray_ws.service > /etc/systemd/system/xray_ws.service  
