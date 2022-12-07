@@ -40,7 +40,7 @@ chmod +x /root/vnstat.sh
 # ///////////////////////xray
 mkdir -p vision
 
-for i in {1451..1500}
+for i in {1451..1460}
 do
     cat template/example.json | sed 's/domain.imrcrab.com/'${1}'.imrcrab.com/g' | sed 's/xxxx/'${i}'/g' > vision/xray_${i}.json
     cat template/example.service | sed 's/xxxx/'${i}'/g' > /etc/systemd/system/xray_${i}.service
