@@ -35,7 +35,8 @@
                     "serverName": "domain.imrcrab.com",
                     "rejectUnknownSni": true,
                     "alpn": [
-                        "h3"
+                        "h3",
+                        "h2"
                     ],
                     "fingerprint": "chrome",
                     "cipherSuites": "TLS13-AES128-GCM-SHA256:TLS13-AES256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES128-CCM-SHA256",
