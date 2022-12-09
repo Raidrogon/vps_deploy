@@ -1,5 +1,5 @@
 #!/bin/bash
-echo $1
+echo $1 "start port:" $2 "end port:"$3
 
 
 
@@ -37,10 +37,15 @@ chmod +x /root/vnstat.sh
 
 
 
-# ///////////////////////xray
+# ///////////////////////xray disable and delete
+ls /etc/systemd/system | grep xray | xargs systemctl disable --now
+rm -rf /etc/systemd/system/xray_*
+rm -rf vision/*
+
+# ///////////////////////xray enable
 mkdir -p vision
 
-for i in {1451..1455}
+for (( i=${2}; i<=${3}; i++ ))
 do
     cat template/example.json | sed 's/domain.imrcrab.com/'${1}'/g' | sed 's/xxxx/'${i}'/g' > vision/xray_${i}.json
     cat template/example.service | sed 's/xxxx/'${i}'/g' > /etc/systemd/system/xray_${i}.service
@@ -52,10 +57,13 @@ cat template/envoy.service > /etc/systemd/system/envoy.service
 # cat ws/xray_ws.service > /etc/systemd/system/xray_ws.service  
 # systemctl enable --now envoy.service
 
+systemctl daemon-reload
+
 sleep 1s
 ls /etc/systemd/system | grep xray | xargs systemctl enable --now
 sleep 2s
 ls /etc/systemd/system | grep xray | xargs systemctl restart
+
 sleep 2s
 
 

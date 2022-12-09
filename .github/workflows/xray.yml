@@ -6,6 +6,14 @@ on:
         description: 'add domain'     
         required: true
         default: fq.imrcrab.com
+      startport:
+        description: 'start port'     
+        required: true
+        default: '1451'
+      endport:
+        description: 'end port'     
+        required: true
+        default: '1460'
 env:
   XRAY_VERSION: v1.6.5
   XRAY_DIR: xray
@@ -67,7 +75,7 @@ jobs:
           script: |
             cd /root/${{ env.XRAY_DIR }}
             chmod +x xray_template_install.sh
-            ./xray_template_install.sh ${{ github.event.inputs.domain }}
+            ./xray_template_install.sh ${{ github.event.inputs.domain }} ${{ github.event.inputs.startport }} ${{ github.event.inputs.endport }}
             
       - name: git push change file
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
