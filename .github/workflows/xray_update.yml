@@ -1,0 +1,106 @@
+name: manual add ip
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'update version'     
+        required: true
+        default: 1.6.5
+env:
+  XRAY_DIR: iptables/dmit-hk/iptables.conf
+
+permissions: write-all
+
+jobs:
+  dmit-us:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_US }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_US }}
+          script: |
+              cd xray/
+              sh update.sh ${{ github.event.inputs.version }}
+  dmit-hk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_DMIT_HK }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_DMIT_HK }}
+          script: |
+              cd xray/
+              sh update.sh ${{ github.event.inputs.version }}
+  vm-19:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
+          script: |
+              cd xray/
+              sh update.sh ${{ github.event.inputs.version }}
+  vm-66:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
+          script: |
+              cd xray/
+              sh update.sh ${{ github.event.inputs.version }}
