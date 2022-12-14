@@ -1,11 +1,11 @@
-name: manual add ip
+name: update xray
 on: 
   workflow_dispatch:
     inputs:
       version:
         description: 'update version'     
         required: true
-        default: 1.6.5
+        default: v1.6.5
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 

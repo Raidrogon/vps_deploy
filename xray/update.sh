@@ -1,8 +1,6 @@
 #!/bin/bash
-version=1.6.5
-if [[ -n $1  ]];then
-    version=$1
-fi
+version=$1
+
 wget -v https://github.com/XTLS/Xray-core/releases/download/${version}/Xray-linux-64.zip
 unzip -o Xray-linux-64.zip
 chmod +x xray
