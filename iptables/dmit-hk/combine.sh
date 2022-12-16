@@ -20,7 +20,7 @@ fi
 echo "-A INPUT -p tcp  --match multiport --dports 3306,19092,6379 -j ACCEPT" >> white_iptables.conf
 
 
-sort white_iptables.conf | uniq -u  >> iptables.conf
+sort white_iptables.conf | uniq  >> iptables.conf
 cat end.conf >> iptables.conf
 
 
