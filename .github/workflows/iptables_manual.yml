@@ -226,7 +226,7 @@ jobs:
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
           if [[ -n ${{ github.event.inputs.rip }} ]];then
             cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
-            uniq -u ip_white.bak > ip_white.bak.uniq
+           sort ip_white.bak | uniq -u > ip_white.bak.uniq
             rm -rf ip_white ip_white.bak
             mv ip_white.bak.uniq ip_white
           fi
