@@ -1,8 +1,6 @@
 {
     "log": {
-        "loglevel": "error",
-        "access": "/tmp/xxxx_access.log",
-        "error": "/tmp/xxxx_error.log"
+        "loglevel": "error"
     },
     "dns": {
         "servers": [
