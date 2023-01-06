@@ -1,0 +1,21 @@
+[Unit]
+Description=ebpf service
+After=network.target
+
+[Service]
+User=root
+Group=root
+PermissionsStartOnly=false
+WorkingDirectory=/root/xray
+Environment=RUST_LOG=ERROR
+Environment=PATH=/usr/sbin:$PATH
+ExecStart=/root/xray/ebpf
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=1048576
+LimitMEMLOCK=145536
+# TasksMax=1048576
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,150 @@
+name: ebpf
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'update version'     
+        required: true
+        default: default
+env:
+  XRAY_DIR: ebpf_bk
+
+permissions: write-all
+
+jobs:
+  dmit-us:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_US }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_US }}
+          script: |
+              cd ebpf_bk/
+              chmod +x start.sh
+              sh start.sh
+  dmit-hk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_DMIT_HK }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_DMIT_HK }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_DMIT_HK }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_DMIT_HK }}
+          script: |
+              cd ebpf_bk/
+              chmod +x start.sh
+              sh start.sh
+  vm-19:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
+          script: |
+              cd ebpf_bk/
+              chmod +x start.sh
+              sh start.sh
+  vm-66:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
+        shell: bash
+      - name: copy file via ssh key
+        if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
+          source: "./${{ env.XRAY_DIR }}"
+          target: "/root"
+      - name: restore iptables from file
+        uses: appleboy/ssh-action@master
+        with:
+          overwrite: true
+          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
+          username: ${{ secrets.VPS_USERNAME }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
+          script: |
+              cd ebpf_bk/
+              chmod +x start.sh
+              sh start.sh
