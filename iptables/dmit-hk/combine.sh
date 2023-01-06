@@ -22,5 +22,4 @@ fi
 
 sort white_iptables.conf | uniq  >> iptables.conf
 cat end.conf >> iptables.conf
-cp ip_white ip_white.bak
 

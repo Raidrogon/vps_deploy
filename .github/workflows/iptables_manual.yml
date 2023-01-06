@@ -10,7 +10,7 @@ on:
         required: false
         default: 127.0.0.1
 env:
-  XRAY_DIR: iptables/dmit-hk/ip_white.bak
+  XRAY_DIR: iptables/dmit-hk/ip_white
 
 permissions: write-all
 
@@ -58,10 +58,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_US }}
           script: |
-            systemctl stop ebpf
-            rm -rf ip_white
-            mv ip_white.bak ip_white
-            systemctl start ebpf
+            systemctl restart ebpf
   dmit-hk:
     runs-on: ubuntu-latest
     steps:
@@ -105,10 +102,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_DMIT_HK }}
           script: |
-            systemctl stop ebpf
-            rm -rf ip_white
-            mv ip_white.bak ip_white
-            systemctl start ebpf
+            systemctl restart ebpf
   vm-19:
     runs-on: ubuntu-latest
     steps:
@@ -152,10 +146,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
           script: |
-            systemctl stop ebpf
-            rm -rf ip_white
-            mv ip_white.bak ip_white
-            systemctl start ebpf
+            systemctl restart ebpf
   vm-66:
     runs-on: ubuntu-latest
     steps:
@@ -199,10 +190,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
           script: |
-            systemctl stop ebpf
-            rm -rf ip_white
-            mv ip_white.bak ip_white
-            systemctl start ebpf
+            systemctl restart ebpf
 
 
   commit-push-ip:
