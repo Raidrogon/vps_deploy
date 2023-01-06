@@ -10,7 +10,7 @@ on:
         required: false
         default: 127.0.0.1
 env:
-  XRAY_DIR: iptables/dmit-hk/iptables.conf
+  XRAY_DIR: iptables/dmit-hk/ip_white.bak
 
 permissions: write-all
 
@@ -58,10 +58,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_US }}
           script: |
-            iptables-restore < /root/iptables/dmit-hk/iptables.conf
-            /usr/sbin/netfilter-persistent save
-            echo "${{ steps.date.outputs.today }}" >> it_change
-            rm -rf /root/iptables
+            systemctl stop ebpf
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+            systemctl start ebpf
   dmit-hk:
     runs-on: ubuntu-latest
     steps:
@@ -105,10 +105,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_DMIT_HK }}
           script: |
-            iptables-restore < /root/iptables/dmit-hk/iptables.conf
-            /usr/sbin/netfilter-persistent save
-            echo "${{ steps.date.outputs.today }}" >> it_change
-            rm -rf /root/iptables
+            systemctl stop ebpf
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+            systemctl start ebpf
   vm-19:
     runs-on: ubuntu-latest
     steps:
@@ -152,10 +152,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
           script: |
-            iptables-restore < /root/iptables/dmit-hk/iptables.conf
-            /usr/sbin/netfilter-persistent save
-            echo "${{ steps.date.outputs.today }}" >> it_change
-            rm -rf /root/iptables
+            systemctl stop ebpf
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+            systemctl start ebpf
   vm-66:
     runs-on: ubuntu-latest
     steps:
@@ -199,10 +199,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
           script: |
-            iptables-restore < /root/iptables/dmit-hk/iptables.conf
-            /usr/sbin/netfilter-persistent save
-            echo "${{ steps.date.outputs.today }}" >> it_change
-            rm -rf /root/iptables
+            systemctl stop ebpf
+            rm -rf ip_white
+            mv ip_white.bak ip_white
+            systemctl start ebpf
 
 
   commit-push-ip:
