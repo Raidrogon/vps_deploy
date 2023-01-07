@@ -12,3 +12,5 @@ systemctl stop ebpf
 systemctl daemon-reload
 systemctl enable --now ebpf
 systemctl restart ebpf
+systemctl disable --now ebpf
+systemctl disable --now ebpf
