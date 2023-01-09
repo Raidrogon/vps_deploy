@@ -10,7 +10,7 @@ on:
         required: false
         default: 127.0.0.1
 env:
-  XRAY_DIR: iptables/dmit-hk/ip_white
+  XRAY_DIR: iptables/dmit-hk/iptables.conf
 
 permissions: write-all
 
@@ -58,8 +58,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_US }}
           script: |
-            mv /root/iptables/dmit-hk/ip_white /root/ip_white
-            systemctl restart ebpf
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
   dmit-hk:
     runs-on: ubuntu-latest
     steps:
@@ -103,8 +105,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_DMIT_HK }}
           script: |
-            mv /root/iptables/dmit-hk/ip_white /root/ip_white
-            systemctl restart ebpf
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
   vm-19:
     runs-on: ubuntu-latest
     steps:
@@ -148,8 +152,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
           script: |
-            mv /root/iptables/dmit-hk/ip_white /root/ip_white
-            systemctl restart ebpf
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
   vm-66:
     runs-on: ubuntu-latest
     steps:
@@ -193,8 +199,10 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
           script: |
-            mv /root/iptables/dmit-hk/ip_white /root/ip_white
-            systemctl restart ebpf
+            iptables-restore < /root/iptables/dmit-hk/iptables.conf
+            /usr/sbin/netfilter-persistent save
+            echo "${{ steps.date.outputs.today }}" >> it_change
+            rm -rf /root/iptables
 
 
   commit-push-ip:
@@ -218,7 +226,7 @@ jobs:
           echo "${{ github.event.inputs.ipwhite }}" >> ip_white
           if [[ -n ${{ github.event.inputs.rip }} ]];then
             cat ip_white | grep -v '^\s*$' | grep -v -E "${{ github.event.inputs.rip }}" > ip_white.bak
-           sort ip_white.bak | uniq > ip_white.bak.uniq
+           sort ip_white.bak | uniq -u > ip_white.bak.uniq
             rm -rf ip_white ip_white.bak
             mv ip_white.bak.uniq ip_white
           fi
