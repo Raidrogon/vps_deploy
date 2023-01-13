@@ -6,6 +6,7 @@ After=network.target
 PermissionsStartOnly=true
 ExecStart=/usr/bin/envoy -c /root/xray/envoy.yaml
 Restart=on-failure
+RestartSec=2s
 LimitNOFILE=10240:40960
 
 

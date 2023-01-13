@@ -7,6 +7,7 @@ User=root
 PermissionsStartOnly=false
 ExecStart=/root/xray/xray run -config /root/xray/vision/xray_xxxx.json
 Restart=on-failure
+RestartSec=2s
 LimitNOFILE=10240:40960
 
 

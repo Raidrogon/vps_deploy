@@ -15,6 +15,7 @@ LimitNPROC=1048576
 LimitCORE=1048576
 LimitMEMLOCK=10455360
 # TasksMax=1048576
+RestartSec=2s
 
 
 [Install]
