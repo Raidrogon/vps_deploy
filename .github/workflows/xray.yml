@@ -6,16 +6,19 @@ on:
         description: 'add domain'     
         required: true
         default: fq.imrcrab.com
+      xrayversion:
+        description: 'xray version'     
+        required: true
+        default: v1.7.2
       startport:
         description: 'start port'     
         required: true
-        default: '1451'
+        default: '1453'
       endport:
         description: 'end port'     
         required: true
-        default: '1460'
+        default: '1456'
 env:
-  XRAY_VERSION: v1.7.0
   XRAY_DIR: xray
 
 jobs:
@@ -49,7 +52,7 @@ jobs:
         if: ${{ steps.response_info_1.outputs.run_project_b_build == 'true' }}
         run: |
           cd ${{ env.XRAY_DIR }}
-          wget -v https://github.com/XTLS/Xray-core/releases/download/${{ env.XRAY_VERSION }}/Xray-linux-64.zip
+          wget -v https://github.com/XTLS/Xray-core/releases/download/${{ github.event.inputs.xrayversion }}/Xray-linux-64.zip
           cd ../
           pwd
           ls -all ${{ env.XRAY_DIR }}/
