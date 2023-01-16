@@ -1,9 +1,15 @@
 name: PUSH
-on:
-  push:
-    paths:
-      - "iptables/dmit-hk/ip_*"
-      - "iptables/dmit-hk/release.md"
+on: 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'update version'     
+        required: true
+        default: default
+  # push:
+  #   paths:
+  #     - "iptables/dmit-hk/ip_*"
+  #     - "iptables/dmit-hk/release.md"
 env:
   XRAY_DIR: iptables/dmit-hk/iptables.conf
 
