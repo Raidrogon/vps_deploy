@@ -9,7 +9,7 @@ PermissionsStartOnly=false
 WorkingDirectory=/root/ebpf
 Environment=RUST_LOG=ERROR
 Environment=PATH=/usr/sbin:$PATH
-ExecStart=/root/ebpf/ebpf -u
+ExecStart=/root/ebpf/ebpf
 LimitNOFILE=1048576
 LimitNPROC=1048576
 LimitCORE=1048576
