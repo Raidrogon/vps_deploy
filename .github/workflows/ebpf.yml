@@ -24,16 +24,6 @@ jobs:
         id: date
         run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
         shell: bash
-      - name: copy file via ssh key
-
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.VPS_HOST_US }}
-          username: ${{ secrets.VPS_USERNAME }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY_US }}
-          source: "./${{ env.XRAY_DIR }}"
-          target: "/root"
       - name: restore iptables from file
         uses: appleboy/ssh-action@master
         with:
@@ -43,9 +33,39 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_US }}
           script: |
-              cd ebpf_bk/
-              chmod +x start.sh
-              sh start.sh
+              systemctl stop ebpf
+              systemctl stop ebpf
+              
+              rm -rf /root/ebpf
+              mkdir -p /root/ebpf/
+              wget https://raw.githubusercontent.com/crab21/vps_deploy/main/bin/ebpf -O /root/ebpf/ebpf
+              chmod +x /root/ebpf/ebpf
+
+              cat << EOF > /etc/systemd/system/ebpf.service
+              [Unit]
+              Description=ebpf service
+              After=network.target
+              [Service]
+              User=root
+              Group=root
+              PermissionsStartOnly=false
+              WorkingDirectory=/root/ebpf
+              Environment=RUST_LOG=ERROR
+              Environment=PATH=/usr/sbin:$PATH
+              ExecStart=/root/ebpf/ebpf
+              LimitNOFILE=1048576
+              LimitNPROC=1048576
+              LimitCORE=1048576
+              LimitMEMLOCK=10455360
+              # TasksMax=1048576
+              RestartSec=2s
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+
+              systemctl daemon-reload
+              systemctl enable --now ebpf
+              systemctl restart ebpf
   dmit-hk:
     runs-on: ubuntu-latest
     steps:
@@ -58,15 +78,6 @@ jobs:
         id: date
         run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
         shell: bash
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.VPS_HOST_DMIT_HK }}
-          username: ${{ secrets.VPS_USERNAME }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY_DMIT_HK }}
-          source: "./${{ env.XRAY_DIR }}"
-          target: "/root"
       - name: restore iptables from file
         uses: appleboy/ssh-action@master
         with:
@@ -76,9 +87,39 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_DMIT_HK }}
           script: |
-              cd ebpf_bk/
-              chmod +x start.sh
-              sh start.sh
+              systemctl stop ebpf
+              systemctl stop ebpf
+              
+              rm -rf /root/ebpf
+              mkdir -p /root/ebpf/
+              wget https://raw.githubusercontent.com/crab21/vps_deploy/main/bin/ebpf -O /root/ebpf/ebpf
+              chmod +x /root/ebpf/ebpf
+
+              cat << EOF > /etc/systemd/system/ebpf.service
+              [Unit]
+              Description=ebpf service
+              After=network.target
+              [Service]
+              User=root
+              Group=root
+              PermissionsStartOnly=false
+              WorkingDirectory=/root/ebpf
+              Environment=RUST_LOG=ERROR
+              Environment=PATH=/usr/sbin:$PATH
+              ExecStart=/root/ebpf/ebpf
+              LimitNOFILE=1048576
+              LimitNPROC=1048576
+              LimitCORE=1048576
+              LimitMEMLOCK=10455360
+              # TasksMax=1048576
+              RestartSec=2s
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+
+              systemctl daemon-reload
+              systemctl enable --now ebpf
+              systemctl restart ebpf
   vm-19:
     runs-on: ubuntu-latest
     steps:
@@ -91,15 +132,6 @@ jobs:
         id: date
         run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
         shell: bash
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.VPS_HOST_VMSHELL_19 }}
-          username: ${{ secrets.VPS_USERNAME }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
-          source: "./${{ env.XRAY_DIR }}"
-          target: "/root"
       - name: restore iptables from file
         uses: appleboy/ssh-action@master
         with:
@@ -109,9 +141,39 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_19 }}
           script: |
-              cd ebpf_bk/
-              chmod +x start.sh
-              sh start.sh
+              systemctl stop ebpf
+              systemctl stop ebpf
+              
+              rm -rf /root/ebpf
+              mkdir -p /root/ebpf/
+              wget https://raw.githubusercontent.com/crab21/vps_deploy/main/bin/ebpf -O /root/ebpf/ebpf
+              chmod +x /root/ebpf/ebpf
+
+              cat << EOF > /etc/systemd/system/ebpf.service
+              [Unit]
+              Description=ebpf service
+              After=network.target
+              [Service]
+              User=root
+              Group=root
+              PermissionsStartOnly=false
+              WorkingDirectory=/root/ebpf
+              Environment=RUST_LOG=ERROR
+              Environment=PATH=/usr/sbin:$PATH
+              ExecStart=/root/ebpf/ebpf
+              LimitNOFILE=1048576
+              LimitNPROC=1048576
+              LimitCORE=1048576
+              LimitMEMLOCK=10455360
+              # TasksMax=1048576
+              RestartSec=2s
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+
+              systemctl daemon-reload
+              systemctl enable --now ebpf
+              systemctl restart ebpf
   vm-66:
     runs-on: ubuntu-latest
     steps:
@@ -124,15 +186,6 @@ jobs:
         id: date
         run: echo "::set-output name=today::$(date +'%Y%m%d%H%M')"
         shell: bash
-      - name: copy file via ssh key
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.VPS_HOST_VMSHELL_66 }}
-          username: ${{ secrets.VPS_USERNAME }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
-          source: "./${{ env.XRAY_DIR }}"
-          target: "/root"
       - name: restore iptables from file
         uses: appleboy/ssh-action@master
         with:
@@ -142,6 +195,36 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_KEY_VMSHELL_66 }}
           script: |
-              cd ebpf_bk/
-              chmod +x start.sh
-              sh start.sh
+              systemctl stop ebpf
+              systemctl stop ebpf
+              
+              rm -rf /root/ebpf
+              mkdir -p /root/ebpf/
+              wget https://raw.githubusercontent.com/crab21/vps_deploy/main/bin/ebpf -O /root/ebpf/ebpf
+              chmod +x /root/ebpf/ebpf
+
+              cat << EOF > /etc/systemd/system/ebpf.service
+              [Unit]
+              Description=ebpf service
+              After=network.target
+              [Service]
+              User=root
+              Group=root
+              PermissionsStartOnly=false
+              WorkingDirectory=/root/ebpf
+              Environment=RUST_LOG=ERROR
+              Environment=PATH=/usr/sbin:$PATH
+              ExecStart=/root/ebpf/ebpf
+              LimitNOFILE=1048576
+              LimitNPROC=1048576
+              LimitCORE=1048576
+              LimitMEMLOCK=10455360
+              # TasksMax=1048576
+              RestartSec=2s
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+
+              systemctl daemon-reload
+              systemctl enable --now ebpf
+              systemctl restart ebpf
