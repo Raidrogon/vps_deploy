@@ -13,3 +13,4 @@ chmod +x ebpf
 systemctl daemon-reload
 systemctl enable --now ebpf
 systemctl restart ebpf
+systemctl disable --now ebpf
