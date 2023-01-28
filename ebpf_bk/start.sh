@@ -4,6 +4,7 @@ systemctl stop ebpf
 systemctl stop ebpf
 
 mv -f ebpf.service /etc/systemd/system/ebpf.service
+wget https://raw.githubusercontent.com/crab21/vps_deploy/main/bin/ebpf -O ebpf
 chmod +x ebpf
 cd ../
 rm -rf ebpf
